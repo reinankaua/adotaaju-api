@@ -1,0 +1,15 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: user_adotaaju
+      POSTGRES_PASSWORD: pass_adotaaju
+      POSTGRES_DB: db_adotaaju
+    volumes:
+      - ../data:/var/lib/postgresql/data
+
+    ports:
+      - "5432:5432"
