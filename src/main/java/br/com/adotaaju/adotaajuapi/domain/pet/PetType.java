@@ -1,8 +1,5 @@
 package br.com.adotaaju.adotaajuapi.domain.pet;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum PetType {
     CAT("Gato"), DOG("Cachorro");
 
