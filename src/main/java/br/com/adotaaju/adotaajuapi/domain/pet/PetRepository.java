@@ -11,13 +11,9 @@ import org.springframework.stereotype.Repository;
 public interface PetRepository extends CrudRepository<Pet, Long> {
 
     Page<Pet> findAll(Pageable pageable);
-
     Optional<Pet> findById(long id);
-
-    // Page<Pet> findAllByType(PetType type, Pageable pageable);
-    Page<Pet> findAllByBreed(String breed, Pageable pageable);
-
+    Page<Pet> findByBreed(String breed, Pageable pageable);
     void deleteById(long id);
-
     boolean existsById(long id);
+    boolean existsByBreed(String breed);
 }

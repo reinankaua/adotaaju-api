@@ -2,11 +2,8 @@ package br.com.adotaaju.adotaajuapi.domain.pet;
 
 import java.util.Optional;
 
-import javax.security.auth.Subject;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,58 +18,55 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "v1/animal")
+@RequestMapping(value = "/animal")
 public class PetController {
 
     @Autowired
     private PetService petService;
 
-    @PostMapping
-    public ResponseEntity<Pet> create(@Valid @RequestBody Pet pet) {
-        petService.save(pet);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pet);
+    @PostMapping(value = "/cadastrar")
+    public ResponseEntity<PetResponse> create(@Valid @RequestBody PetRequest petRequest) {
+
+        return petService.save(petRequest);
+
     }
 
-    @GetMapping
+    @GetMapping(value = "/buscarTodos")
     public ResponseEntity<Page<Pet>> findAll(@RequestParam int pagina, @RequestParam int itens) {
-        return ResponseEntity.ok(petService.findAll(pagina, itens));
+
+        return petService.findAll(pagina, itens);
+
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/buscarPorId/{id}")
     public ResponseEntity<Optional<Pet>> findById(@PathVariable Long id) {
-        if (!petService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(petService.findById(id));
+
+        return petService.findById(id);
+
     }
 
-    // @GetMapping(value = "/busca-tipo")
-    // public ResponseEntity<Page<Pet>> findAllByType(@RequestParam("tipo") String
-    // type, @RequestParam int pagina, @RequestParam int itens) {
-    // return ResponseEntity.ok(petService.findAllByBreed(type, pagina, itens));
-    // }
-
-    @GetMapping(value = "/busca-raca")
-    public ResponseEntity<Page<Pet>> findById(@RequestParam("raca") String breed, @RequestParam int pagina,
+    @GetMapping(value = "/buscarPorRaca")
+    public ResponseEntity<Page<Pet>> findByBreed(
+            @RequestParam String raca,
+            @RequestParam int pagina,
             @RequestParam int itens) {
-        return ResponseEntity.ok(petService.findAllByBreed(breed, pagina, itens));
+
+        return petService.findByBreed(raca, pagina, itens);
+
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Pet> updatePet(@PathVariable Long id, @RequestBody Pet pet) {
-        if (!petService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        pet.setId(id);
-        return ResponseEntity.ok(petService.save(pet));
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<PetResponse> update(
+            @PathVariable Long id,
+            @RequestBody PetRequest petRequest) {
+
+        return petService.update(id, petRequest);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        if (!petService.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        petService.deleteById(id);
-        return ResponseEntity.noContent().build();
+
+        return petService.deleteById(id);
+
     }
 }
