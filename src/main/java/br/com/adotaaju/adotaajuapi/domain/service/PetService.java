@@ -1,5 +1,10 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.domain.service;
 
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
+import br.com.adotaaju.adotaajuapi.domain.pet.PetMapper;
+import br.com.adotaaju.adotaajuapi.domain.pet.PetRequest;
+import br.com.adotaaju.adotaajuapi.domain.pet.PetResponse;
+import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;

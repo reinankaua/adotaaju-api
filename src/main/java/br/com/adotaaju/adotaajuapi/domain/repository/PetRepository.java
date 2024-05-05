@@ -1,7 +1,8 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.domain.repository;
 
 import java.util.Optional;
 
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;

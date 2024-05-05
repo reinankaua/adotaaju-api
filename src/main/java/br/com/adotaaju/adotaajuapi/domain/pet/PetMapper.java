@@ -1,5 +1,7 @@
 package br.com.adotaaju.adotaajuapi.domain.pet;
 
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
+
 public class PetMapper {
 
     public static Pet toPet(PetRequest petRequest){
