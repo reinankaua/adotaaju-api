@@ -1,7 +1,8 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.domain.entity;
 
 import java.time.LocalDateTime;
 
+import br.com.adotaaju.adotaajuapi.domain.pet.PetType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -13,7 +14,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -49,8 +49,8 @@ public class Pet {
     @NotNull(message = "O campo weight é obrigatório")
     private Float weight;
     
-    @NotNull(message = "O campo isAdopted é obrigatório")
-    private Boolean isAdopted;
+    @NotNull(message = "O campo flAdopted é obrigatório")
+    private Boolean flAdopted;
 
     @CreatedDate
     private LocalDateTime createdAt;

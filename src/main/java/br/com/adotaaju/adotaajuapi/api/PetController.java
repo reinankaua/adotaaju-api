@@ -1,7 +1,11 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.api;
 
 import java.util.Optional;
 
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
+import br.com.adotaaju.adotaajuapi.domain.pet.PetRequest;
+import br.com.adotaaju.adotaajuapi.domain.pet.PetResponse;
+import br.com.adotaaju.adotaajuapi.domain.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
