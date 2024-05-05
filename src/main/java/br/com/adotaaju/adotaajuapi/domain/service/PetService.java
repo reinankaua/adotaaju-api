@@ -74,7 +74,7 @@ public class PetService {
         existingPet.setAge(petRequest.getAge() != null ? petRequest.getAge() : existingPet.getAge());
         existingPet.setColor(petRequest.getColor() != null ? petRequest.getColor() : existingPet.getColor());
         existingPet.setWeight(petRequest.getWeight() != null ? petRequest.getWeight() : existingPet.getWeight());
-        existingPet.setIsAdopted(petRequest.getIsAdopted() != null ? petRequest.getIsAdopted() : existingPet.getIsAdopted());
+        existingPet.setFlAdopted(petRequest.getFlAdopted() != null ? petRequest.getFlAdopted() : existingPet.getFlAdopted());
 
         var petSaved = petRepository.save(existingPet);
         var petResponse = PetMapper.toPetResponse(petSaved);
