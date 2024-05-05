@@ -1,9 +1,9 @@
 package br.com.adotaaju.adotaajuapi.domain.service;
 
 import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
-import br.com.adotaaju.adotaajuapi.domain.pet.PetMapper;
-import br.com.adotaaju.adotaajuapi.domain.pet.PetRequest;
-import br.com.adotaaju.adotaajuapi.domain.pet.PetResponse;
+import br.com.adotaaju.adotaajuapi.api.dto.PetMapper;
+import br.com.adotaaju.adotaajuapi.api.dto.PetRequest;
+import br.com.adotaaju.adotaajuapi.api.dto.PetResponse;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -74,7 +74,7 @@ public class PetService {
         existingPet.setAge(petRequest.getAge() != null ? petRequest.getAge() : existingPet.getAge());
         existingPet.setColor(petRequest.getColor() != null ? petRequest.getColor() : existingPet.getColor());
         existingPet.setWeight(petRequest.getWeight() != null ? petRequest.getWeight() : existingPet.getWeight());
-        existingPet.setIsAdopted(petRequest.getIsAdopted() != null ? petRequest.getIsAdopted() : existingPet.getIsAdopted());
+        existingPet.setFlAdopted(petRequest.getFlAdopted() != null ? petRequest.getFlAdopted() : existingPet.getFlAdopted());
 
         var petSaved = petRepository.save(existingPet);
         var petResponse = PetMapper.toPetResponse(petSaved);

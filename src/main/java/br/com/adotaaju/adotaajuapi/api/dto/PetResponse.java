@@ -1,10 +1,8 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.api.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class PetResponse {
     private Long id;
     private PetType type;
@@ -12,5 +10,5 @@ public class PetResponse {
     private Integer age;
     private String color;
     private Float weight;
-    private Boolean isAdopted;
+    private Boolean flAdopted;
 }

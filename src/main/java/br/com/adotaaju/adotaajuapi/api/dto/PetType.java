@@ -1,4 +1,4 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.api.dto;
 
 public enum PetType {
     CAT("Gato"), DOG("Cachorro");

@@ -1,4 +1,4 @@
-package br.com.adotaaju.adotaajuapi.domain.pet;
+package br.com.adotaaju.adotaajuapi.api.dto;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +13,6 @@ public class PetRequest {
     private Integer age;
     private String color;
     private Float weight;
-    private Boolean isAdopted;
+    private Boolean flAdopted;
     private LocalDateTime createdAt;
 }
