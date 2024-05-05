@@ -13,6 +13,6 @@ public class PetRequest {
     private Integer age;
     private String color;
     private Float weight;
-    private Boolean adopted;
+    private Boolean isAdopted;
     private LocalDateTime createdAt;
 }

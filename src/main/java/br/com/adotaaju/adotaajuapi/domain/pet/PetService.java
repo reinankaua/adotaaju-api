@@ -60,7 +60,7 @@ public class PetService {
 
         var existingPetOptional = petRepository.findById(id);
         if (existingPetOptional.isEmpty()) {
-            return ResponseEntity.notFound().build(); // Handle non-existent pet
+            return ResponseEntity.notFound().build();
         }
         var existingPet = existingPetOptional.get();
 
@@ -69,7 +69,7 @@ public class PetService {
         existingPet.setAge(petRequest.getAge() != null ? petRequest.getAge() : existingPet.getAge());
         existingPet.setColor(petRequest.getColor() != null ? petRequest.getColor() : existingPet.getColor());
         existingPet.setWeight(petRequest.getWeight() != null ? petRequest.getWeight() : existingPet.getWeight());
-        existingPet.setAdopted(petRequest.getAdopted() != null ? petRequest.getAdopted() : existingPet.getAdopted());
+        existingPet.setIsAdopted(petRequest.getIsAdopted() != null ? petRequest.getIsAdopted() : existingPet.getIsAdopted());
 
         var petSaved = petRepository.save(existingPet);
         var petResponse = PetMapper.toPetResponse(petSaved);

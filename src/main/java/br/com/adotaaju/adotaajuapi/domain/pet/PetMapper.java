@@ -9,6 +9,8 @@ public class PetMapper {
         pet.setAge(petRequest.getAge());
         pet.setColor(petRequest.getColor());
         pet.setWeight(petRequest.getWeight());
+        pet.setIsAdopted(petRequest.getIsAdopted());
+
         return pet;
     }
 
@@ -20,7 +22,7 @@ public class PetMapper {
         petResponse.setAge(pet.getAge());
         petResponse.setWeight(pet.getWeight());
         petResponse.setColor(pet.getColor());
-        petResponse.setAdopted(pet.getAdopted());
+        petResponse.setIsAdopted(pet.getIsAdopted());
 
         return petResponse;
     }

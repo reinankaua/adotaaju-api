@@ -37,19 +37,20 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private PetType type;
 
-    @NotBlank(message = "A raça é obrigatória")
+    @NotBlank(message = "O campo breed é obrigatória")
     private String breed;
 
-    @NotNull
+    @NotNull(message = "O campo age é obrigatória")
     private Integer age;
 
-    @NotBlank(message = "A cor é obrigatória")
+    @NotBlank(message = "O campo color é obrigatória")
     private String color;
 
-    @NotNull(message = "O peso é obrigatório")
+    @NotNull(message = "O campo weight é obrigatório")
     private Float weight;
-
-    private Boolean adopted;
+    
+    @NotNull(message = "O campo isAdopted é obrigatório")
+    private Boolean isAdopted;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -57,8 +58,5 @@ public class Pet {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    @PrePersist
-    public void prePersist() {
-        this.adopted = false;
-    }
+    
 }
