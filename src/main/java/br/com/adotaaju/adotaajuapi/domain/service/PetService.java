@@ -1,14 +1,11 @@
 package br.com.adotaaju.adotaajuapi.domain.service;
 
 import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
+import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.api.dto.PetMapper;
-import br.com.adotaaju.adotaajuapi.api.dto.PetRequest;
-import br.com.adotaaju.adotaajuapi.api.dto.PetResponse;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,85 +20,57 @@ public class PetService {
 
     private final PetRepository petRepository;
 
-    public ResponseEntity<PetResponse> save(PetRequest petRequest) {
-
-        var pet = PetMapper.toPet(petRequest);
+    public PetDTO save(PetDTO petDTO) {
+        var pet = PetMapper.toPet(petDTO);
         var petSaved = petRepository.save(pet);
-        var petResponse = PetMapper.toPetResponse(petSaved);
-        return ResponseEntity.status(HttpStatus.CREATED).body(petResponse);
-        
+        var petConvertedToDTO = PetMapper.toPetDTO(petSaved);
+        return petConvertedToDTO;
     }
 
-    public ResponseEntity<Page<Pet>> findAll(int page, int itens) {
-
-        var petsResult = petRepository.findAll(PageRequest.of(page, itens));
-        if (petsResult.getContent().isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(petsResult);
-
+    public Page<Pet> findAll(int page, int itens) {
+        return petRepository.findAll(PageRequest.of(page, itens));
     }
 
-    public ResponseEntity<Optional<Pet>> findById(long id) {
-
-        if (!petRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.status(HttpStatus.OK).body(petRepository.findById(id));
-
+    public Optional<Pet> findById(long id) {
+        return petRepository.findById(id);
     }
 
-    public ResponseEntity<Page<Pet>> findByBreed(String breed, int page, int itens) {
-
-        var petsResult = petRepository.findByBreed(breed, PageRequest.of(page, itens));
-        if (petsResult.getContent().isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.status(HttpStatus.OK).body(petsResult);
+    public Page<Pet> findByBreed(String breed, int page, int itens) {
+        return petRepository.findByBreed(breed, PageRequest.of(page, itens));
     }
 
-    public ResponseEntity<PetResponse> update(Long id, PetRequest petRequest) {
+    public PetDTO update(Long id, PetDTO petDTO) {
 
         var existingPetOptional = petRepository.findById(id);
+
         if (existingPetOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
+            return null;
         }
+
         var existingPet = existingPetOptional.get();
 
-        existingPet.setType(petRequest.getType() != null ? petRequest.getType() : existingPet.getType());
-        existingPet.setBreed(petRequest.getBreed() != null ? petRequest.getBreed() : existingPet.getBreed());
-        existingPet.setAge(petRequest.getAge() != null ? petRequest.getAge() : existingPet.getAge());
-        existingPet.setColor(petRequest.getColor() != null ? petRequest.getColor() : existingPet.getColor());
-        existingPet.setWeight(petRequest.getWeight() != null ? petRequest.getWeight() : existingPet.getWeight());
-        existingPet.setFlAdopted(petRequest.getFlAdopted() != null ? petRequest.getFlAdopted() : existingPet.getFlAdopted());
+        existingPet.setType(petDTO.type() != null ? petDTO.type() : existingPet.getType());
+        existingPet.setBreed(petDTO.breed() != null ? petDTO.breed() : existingPet.getBreed());
+        existingPet.setAge(petDTO.age() != null ? petDTO.age() : existingPet.getAge());
+        existingPet.setColor(petDTO.color() != null ? petDTO.color() : existingPet.getColor());
+        existingPet.setWeight(petDTO.weight() != null ? petDTO.weight() : existingPet.getWeight());
+        existingPet.setFlAdopted(petDTO.flAdopted() != null ? petDTO.flAdopted() : existingPet.getFlAdopted());
 
         var petSaved = petRepository.save(existingPet);
-        var petResponse = PetMapper.toPetResponse(petSaved);
+        var petConvertedToDTO = PetMapper.toPetDTO(petSaved);
 
-        return ResponseEntity.status(HttpStatus.OK).body(petResponse);
-
+        return petConvertedToDTO;
     }
 
-    public ResponseEntity<Void> deleteById(long id) {
-
-        if (!petRepository.existsById(id)) {
-            return ResponseEntity.notFound().build();
-        }
+    public void deleteById(long id) {
         petRepository.deleteById(id);
-        return ResponseEntity.noContent().build();
-
     }
 
     public boolean existsById(long id) {
-
         return petRepository.existsById(id);
-
     }
 
     public boolean existsByBreed(String breed) {
-
         return petRepository.existsByBreed(breed);
-
     }
 }

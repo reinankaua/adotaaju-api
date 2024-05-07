@@ -1,47 +1,33 @@
 package br.com.adotaaju.adotaajuapi.api.dto;
 
-import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
-
 import java.time.LocalDateTime;
 
 
-public record PetDTO(
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
+
+public record PetDTO(
         Long id,
+
+        @NotNull(message = "O campo type é obrigatório") 
         PetType type,
+
+        @NotBlank(message = "O campo breed é obrigatório") 
         String breed,
+        
+        @NotNull(message = "O campo age é obrigatório") 
         Integer age,
+        
+        @NotBlank(message = "O campo color é obrigatório") 
         String color,
+        
+        @NotNull(message = "O campo weight é obrigatório") 
         Float weight,
-        Boolean isAdopted,
+        
+        @NotNull(message = "O campo flAdopted é obrigatório") 
+        Boolean flAdopted,
 
         LocalDateTime createdAt,
         LocalDateTime updatedAt) {
-
-    public Pet toPet() {
-        return new Pet(
-                id,
-                type,
-                breed,
-                age,
-                color,
-                weight,
-                isAdopted,
-                createdAt,
-                updatedAt);
-    }
-
-    public static PetDTO toPetDTO(Pet pet) {
-
-        return new PetDTO(
-                pet.getId(),
-                pet.getType(),
-                pet.getBreed(),
-                pet.getAge(),
-                pet.getColor(),
-                pet.getWeight(),
-                pet.getFlAdopted(),
-                pet.getCreatedAt(),
-                pet.getUpdatedAt());
-    }
 }

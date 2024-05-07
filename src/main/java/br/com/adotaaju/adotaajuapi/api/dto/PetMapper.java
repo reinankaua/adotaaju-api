@@ -4,28 +4,32 @@ import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 
 public class PetMapper {
 
-    public static Pet toPet(PetRequest petRequest){
-        Pet pet = new Pet();
-        pet.setType(petRequest.getType());
-        pet.setBreed(petRequest.getBreed());
-        pet.setAge(petRequest.getAge());
-        pet.setColor(petRequest.getColor());
-        pet.setWeight(petRequest.getWeight());
-        pet.setFlAdopted(petRequest.getFlAdopted());
-
-        return pet;
+    public static Pet toPet(PetDTO petDTO) {
+        return new Pet(
+            petDTO.id(),
+            petDTO.type(),
+            petDTO.breed(),
+            petDTO.age(),
+            petDTO.color(),
+            petDTO.weight(),
+            petDTO.flAdopted(),
+            petDTO.createdAt(),
+            petDTO.updatedAt()
+        );
     }
 
-    public static PetResponse toPetResponse(Pet pet){
-        PetResponse petResponse = new PetResponse();
-        petResponse.setId(pet.getId());
-        petResponse.setType(pet.getType());
-        petResponse.setBreed(pet.getBreed());
-        petResponse.setAge(pet.getAge());
-        petResponse.setWeight(pet.getWeight());
-        petResponse.setColor(pet.getColor());
-        petResponse.setFlAdopted(pet.getFlAdopted());
+    public static PetDTO toPetDTO(Pet pet) {
 
-        return petResponse;
+        return new PetDTO(
+            pet.getId(),
+            pet.getType(),
+            pet.getBreed(),
+            pet.getAge(),
+            pet.getColor(),
+            pet.getWeight(),
+            pet.getFlAdopted(),
+            pet.getCreatedAt(),
+            pet.getUpdatedAt()
+        );
     }
 }

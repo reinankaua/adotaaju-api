@@ -16,8 +16,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -34,23 +32,13 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Enumerated(EnumType.STRING)
     private PetType type;
 
-    @NotBlank(message = "O campo breed é obrigatória")
     private String breed;
-
-    @NotNull(message = "O campo age é obrigatória")
     private Integer age;
-
-    @NotBlank(message = "O campo color é obrigatória")
     private String color;
-
-    @NotNull(message = "O campo weight é obrigatório")
     private Float weight;
-    
-    @NotNull(message = "O campo flAdopted é obrigatório")
     private Boolean flAdopted;
 
     @CreatedDate
@@ -67,7 +55,7 @@ public class Pet {
         this.age = petDTO.age();
         this.color = petDTO.color();
         this.weight = petDTO.weight();
-        this.flAdopted = petDTO.isAdopted();
+        this.flAdopted = petDTO.flAdopted();
         this.createdAt = petDTO.createdAt();
         this.updatedAt = petDTO.updatedAt();
     }

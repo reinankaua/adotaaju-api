@@ -3,11 +3,11 @@ package br.com.adotaaju.adotaajuapi.api.controller;
 import java.util.Optional;
 
 import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
-import br.com.adotaaju.adotaajuapi.api.dto.PetRequest;
-import br.com.adotaaju.adotaajuapi.api.dto.PetResponse;
+import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.domain.service.PetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,52 +25,64 @@ import jakarta.validation.Valid;
 @RequestMapping(value = "/animal")
 public class PetController {
 
-    @Autowired
-    private PetService petService;
+   @Autowired
+   private PetService petService;
 
-    @PostMapping(value = "/cadastrar")
-    public ResponseEntity<PetResponse> create(@Valid @RequestBody PetRequest petRequest) {
+   @PostMapping(value = "/cadastrar")
+   public ResponseEntity<PetDTO> create(@Valid @RequestBody PetDTO petDTO) {
+      return ResponseEntity.status(HttpStatus.CREATED).body(petService.save(petDTO));
+   }
 
-        return petService.save(petRequest);
+   @GetMapping(value = "/buscarTodos")
+   public ResponseEntity<Page<Pet>> findAll(@RequestParam int pagina, @RequestParam int itens) {
+      var petsResult = petService.findAll(pagina, itens);
+      if (petsResult.getContent().isEmpty()) {
+         return ResponseEntity.noContent().build();
+      }
+      return ResponseEntity.ok(petsResult);
+   }
 
-    }
+   @GetMapping(value = "/buscarPorId/{id}")
+   public ResponseEntity<Optional<Pet>> findById(@PathVariable Long id) {
+      if (!petService.existsById(id)) {
+         return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.status(HttpStatus.OK).body(petService.findById(id));
+   }
 
-    @GetMapping(value = "/buscarTodos")
-    public ResponseEntity<Page<Pet>> findAll(@RequestParam int pagina, @RequestParam int itens) {
+   @GetMapping(value = "/buscarPorRaca")
+   public ResponseEntity<Page<Pet>> findByBreed(
+         @RequestParam String raca,
+         @RequestParam int pagina,
+         @RequestParam int itens) {
 
-        return petService.findAll(pagina, itens);
+      var petsResult = petService.findByBreed(raca, pagina, itens);
+      if (petsResult.getContent().isEmpty()) {
+         return ResponseEntity.notFound().build();
+      }
+      return ResponseEntity.status(HttpStatus.OK).body(petsResult);
+   }
 
-    }
-
-    @GetMapping(value = "/buscarPorId/{id}")
-    public ResponseEntity<Optional<Pet>> findById(@PathVariable Long id) {
-
-        return petService.findById(id);
-
-    }
-
-    @GetMapping(value = "/buscarPorRaca")
-    public ResponseEntity<Page<Pet>> findByBreed(
-            @RequestParam String raca,
-            @RequestParam int pagina,
-            @RequestParam int itens) {
-
-        return petService.findByBreed(raca, pagina, itens);
-
-    }
-
-    @PutMapping("/atualizar/{id}")
-    public ResponseEntity<PetResponse> update(
+   @PutMapping("/atualizar/{id}")
+    public ResponseEntity<PetDTO> update(
             @PathVariable Long id,
-            @RequestBody PetRequest petRequest) {
+            @RequestBody PetDTO petDTO) {
+        
+        var petChanged = petService.update(id, petDTO);
 
-        return petService.update(id, petRequest);
+        if (petChanged == null) {
+            return ResponseEntity.notFound().build();
+        }
+            
+        return ResponseEntity.status(HttpStatus.OK).body(petChanged);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-
-        return petService.deleteById(id);
-
-    }
+   @DeleteMapping("/{id}")
+   public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+      if (!petService.existsById(id)) {
+         return ResponseEntity.notFound().build();
+      }
+      petService.deleteById(id);
+      return ResponseEntity.noContent().build();
+   }
 }
