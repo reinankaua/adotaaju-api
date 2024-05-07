@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PetRepository extends CrudRepository<Pet, Long> {
-
     Page<Pet> findAll(Pageable pageable);
     Optional<Pet> findById(long id);
     Page<Pet> findByBreed(String breed, Pageable pageable);
