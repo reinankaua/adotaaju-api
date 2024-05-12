@@ -1,74 +1,60 @@
 package br.com.adotaaju.adotaajuapi.api.dto;
 
-import java.time.LocalDateTime;
-
-
-import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.Data;
 
+public class PetDTO {
+        @Data
+        public static class Request {
+                private Long id;
 
-public record PetDTO(
-        Long id,
+                @NotNull(message = "The type field is mandatory")
+                @Schema(description = "Type of pet", example = "GATO")
+                private PetType type;
 
-        @NotNull(message = "The type field is mandatory")
-        @Schema(description = "Type of pet", example = "GATO")
-        PetType type,
+                @NotBlank(message = "The breed field is mandatory")
+                @Schema(description = "Breed of pet", example = "Poodle")
+                private String breed;
 
-        @NotBlank(message = "The breed field is mandatory")
-        @Schema(description = "Breed of pet", example = "Poodle")
-        String breed,
-        
-        @NotNull(message = "The age field is mandatory")
-        @Schema(description = "Age of pet", example = "5")
-        Integer age,
-        
-        @NotBlank(message = "The color field is mandatory")
-        @Schema(description = "Color of pet", example = "Black")
-        String color,
-        
-        @NotNull(message = "The weight field is mandatory")
-        @Schema(description = "Weight of pet", example = "22.5")
-        Float weight,
-        
-        @NotNull(message = "The flAdopted field is mandatory")
-        @Schema(description = "Adoption Flag", example = "Sim")
-        Boolean flAdopted,
+                @NotNull(message = "The age field is mandatory")
+                @Schema(description = "Age of pet", example = "5")
+                private Integer age;
 
-        @Schema(description = "Creation date", example = "11/05/2024 19:00:00")
-        LocalDateTime createdAt,
+                @NotBlank(message = "The color field is mandatory")
+                @Schema(description = "Color of pet", example = "Black")
+                private String color;
 
-        @Schema(description = "Update date", example = "11/05/2024 19:00:00")
-        LocalDateTime updatedAt) {
+                @NotNull(message = "The weight field is mandatory")
+                @Schema(description = "Weight of pet", example = "22.5")
+                private Float weight;
 
-        public static PetDTO toPetDTO(Pet pet) {
-                return new PetDTO(
-                        pet.getId(),
-                        pet.getType(),
-                        pet.getBreed(),
-                        pet.getAge(),
-                        pet.getColor(),
-                        pet.getWeight(),
-                        pet.getFlAdopted(),
-                        pet.getCreatedAt(),
-                        pet.getUpdatedAt()
-                );
+                @NotNull(message = "The flAdopted field is mandatory")
+                @Schema(description = "Adoption Flag", example = "true")
+                private Boolean flAdopted;
         }
 
-        public static Pet toPet(PetDTO petDTO) {
-                return new Pet(
-                        petDTO.id(),
-                        petDTO.type(),
-                        petDTO.breed(),
-                        petDTO.age(),
-                        petDTO.color(),
-                        petDTO.weight(),
-                        petDTO.flAdopted(),
-                        petDTO.createdAt(),
-                        petDTO.updatedAt()
-                );
+        @Data
+        public static class Response {
+                private Long id;
+
+                @Schema(description = "Type of pet", example = "GATO")
+                private PetType type;
+
+                @Schema(description = "Breed of pet", example = "Poodle")
+                private String breed;
+
+                @Schema(description = "Age of pet", example = "5")
+                private Integer age;
+
+                @Schema(description = "Color of pet", example = "Black")
+                private String color;
+
+                @Schema(description = "Weight of pet", example = "22.5")
+                private Float weight;
+
+                @Schema(description = "Adoption Flag", example = "true")
+                private Boolean flAdopted;
         }
 }

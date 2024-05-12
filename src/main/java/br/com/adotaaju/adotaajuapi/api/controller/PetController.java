@@ -32,54 +32,21 @@ public class PetController {
 
    @Operation(summary = "Register pet", description = "Register a new pet")
    @PostMapping(value = "/register")
-   public ResponseEntity<PetDTO> create(@Valid @RequestBody PetDTO petDTO) {
-      return ResponseEntity.status(HttpStatus.CREATED).body(petService.save(petDTO));
+   public ResponseEntity<PetDTO.Response> create(@Valid @RequestBody PetDTO.Request petDTO) {
+      PetDTO.Response responseDTO = petService.save(petDTO);
+      return ResponseEntity.status(HttpStatus.CREATED).body(responseDTO);
    }
 
-//   @Operation(summary = "Find all pets", description = "Find for all pets")
-//   @GetMapping(value = "/findAll")
-//   public ResponseEntity<Page<Pet>> findAll(@RequestParam int pagina, @RequestParam int itens) {
-//      var petsResult = petService.findAll(pagina, itens);
-//      if (petsResult.getContent().isEmpty()) {
-//         return ResponseEntity.noContent().build();
-//      }
-//      return ResponseEntity.ok(petsResult);
-//   }
+   @PutMapping("/update/")
+    public ResponseEntity<PetDTO.Response> update(
+            @RequestParam Long id,
+            @RequestBody PetDTO.Request petDTO) throws Exception {
 
-   @Operation(summary = "Find pet by id", description = "Find for a specific pet")
-   @GetMapping(value = "/findById/{id}")
-   public ResponseEntity<Optional<Pet>> findById(@PathVariable Long id) {
-      if (!petService.existsById(id)) {
+      PetDTO.Response responseDTO = petService.update(id, petDTO);
+      if (responseDTO == null) {
          return ResponseEntity.notFound().build();
       }
-      return ResponseEntity.status(HttpStatus.OK).body(petService.findById(id));
-   }
-
-   @GetMapping(value = "/findByBreed")
-   public ResponseEntity<Page<Pet>> findByBreed(
-         @RequestParam String raca,
-         @RequestParam int pagina,
-         @RequestParam int itens) {
-
-      var petsResult = petService.findByBreed(raca, pagina, itens);
-      if (petsResult.getContent().isEmpty()) {
-         return ResponseEntity.notFound().build();
-      }
-      return ResponseEntity.status(HttpStatus.OK).body(petsResult);
-   }
-
-   @PutMapping("/update/{id}")
-    public ResponseEntity<PetDTO> update(
-            @PathVariable Long id,
-            @RequestBody PetDTO petDTO) {
-        
-        var petChanged = petService.update(id, petDTO);
-
-        if (petChanged == null) {
-            return ResponseEntity.notFound().build();
-        }
-            
-        return ResponseEntity.status(HttpStatus.OK).body(petChanged);
+      return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
    @DeleteMapping("/{id}")
@@ -92,8 +59,8 @@ public class PetController {
    }
 
    @GetMapping("/findGeneric")
-   public ResponseEntity<Page<Pet>> searchByCriteria(@Valid PetDTO petDTO, Pageable pageable) {
-      Page<Pet> result = petService.searchByCriteria(petDTO, pageable);
+   public ResponseEntity<Page<PetDTO.Response>> searchByCriteria(@Valid PetDTO.Response petDTO, Pageable pageable) {
+      Page<PetDTO.Response> result = petService.searchByCriteria(petDTO, pageable);
       if (result.isEmpty()) {
          return ResponseEntity.noContent().build();
       }

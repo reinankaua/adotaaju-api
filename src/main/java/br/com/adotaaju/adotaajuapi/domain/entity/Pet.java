@@ -47,16 +47,4 @@ public class Pet {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-
-    public void initFromDTO(PetDTO petDTO) {
-        this.id = petDTO.id();
-        this.type = petDTO.type();
-        this.breed = petDTO.breed();
-        this.age = petDTO.age();
-        this.color = petDTO.color();
-        this.weight = petDTO.weight();
-        this.flAdopted = petDTO.flAdopted();
-        this.createdAt = petDTO.createdAt();
-        this.updatedAt = petDTO.updatedAt();
-    }
 }
