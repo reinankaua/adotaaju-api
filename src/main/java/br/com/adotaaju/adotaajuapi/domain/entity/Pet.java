@@ -19,6 +19,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 @Data
 @Entity
@@ -26,7 +27,7 @@ import lombok.NoArgsConstructor;
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
-public class Pet {
+public class Pet extends RepresentationModel<Pet> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

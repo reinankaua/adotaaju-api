@@ -5,6 +5,7 @@ import java.util.Optional;
 import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.domain.service.PetService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping(value = "/animal")

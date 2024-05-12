@@ -1,11 +1,13 @@
 package br.com.adotaaju.adotaajuapi.domain.service;
 
+import br.com.adotaaju.adotaajuapi.api.controller.PetController;
 import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.api.dto.PetMapper;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,8 +25,7 @@ public class PetService {
     public PetDTO save(PetDTO petDTO) {
         var pet = PetMapper.toPet(petDTO);
         var petSaved = petRepository.save(pet);
-        var petConvertedToDTO = PetMapper.toPetDTO(petSaved);
-        return petConvertedToDTO;
+        return PetMapper.toPetDTO(petSaved);
     }
 
     public Page<Pet> findAll(int page, int itens) {
