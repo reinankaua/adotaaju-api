@@ -2,7 +2,6 @@ package br.com.adotaaju.adotaajuapi.domain.entity;
 
 import java.time.LocalDateTime;
 
-import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.api.dto.PetType;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -22,7 +21,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Entity
-@Table(name = "tb_animal")
+@Table(name = "tb_pet")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
