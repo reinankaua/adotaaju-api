@@ -6,6 +6,7 @@ import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.domain.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -49,8 +50,8 @@ public class PetController {
       return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
     }
 
-   @DeleteMapping("/{id}")
-   public ResponseEntity<Void> deleteById(@PathVariable Long id) {
+   @DeleteMapping("delete/")
+   public ResponseEntity<Void> deleteById(@RequestParam Long id) {
       if (!petService.existsById(id)) {
          return ResponseEntity.notFound().build();
       }
