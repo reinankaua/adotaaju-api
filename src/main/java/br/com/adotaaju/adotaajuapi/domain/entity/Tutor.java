@@ -30,23 +30,12 @@ public class Tutor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "O campo name é obrigatório")
+    private String cpf;
     private String name;
-
-    @NotNull(message = "O campo age é obrigatório")
     private Integer age;
-
-    @NotBlank(message = "O campo adress é obrigatório")
     private String adress;
-
-    @NotBlank(message = "O campo phone é obrigatório")
     private String phone;
-
-    @NotBlank(message = "O campo email é obrigatório")
-    @Email
     private String email;
-
-    @NotNull(message = "O campo flAlreadyAdopted é obrigatório")
     private Boolean flAlreadyAdopted;
 
     @CreatedDate

@@ -5,6 +5,7 @@ import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import jakarta.persistence.criteria.Predicate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -20,7 +21,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class PetService {
 
-    private final PetRepository petRepository;
+    @Autowired
+    private PetRepository petRepository;
 
     public PetDTO.Response save(PetDTO.Request petDTO) {
         var pet = mapToEntity(petDTO);

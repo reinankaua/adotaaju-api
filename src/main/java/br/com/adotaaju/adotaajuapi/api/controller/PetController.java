@@ -80,8 +80,6 @@ public class PetController {
    })
    @DeleteMapping("/delete/{id}")
    public ResponseEntity<String> deleteById(@PathVariable Long id) {
-   @DeleteMapping("delete/")
-   public ResponseEntity<Void> deleteById(@RequestParam Long id) {
       if (!petService.existsById(id)) {
          return ResponseEntity.notFound().build();
       }
