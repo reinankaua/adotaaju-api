@@ -17,9 +17,6 @@ import java.util.Optional;
 @EnableJpaRepositories
 @Repository
 public interface TutorRepository extends CrudRepository<Tutor, Long> {
-    Optional<Tutor> findById(long id);
-    Page<Tutor> findByCpf(String cpf, Pageable pageable);
-    void deleteById(long id);
-    boolean existsById(long id);
-
+    Optional<Tutor> findByCpf(String cpf);
+    boolean existsByCpf(String cpf);
 }

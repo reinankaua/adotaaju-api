@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.ErrorResponse;
@@ -61,7 +62,7 @@ public class PetController {
          @ApiResponse(responseCode = "200", description = "Pet updated successfully"),
          @ApiResponse(responseCode = "404", description = "Couldn't find this pet to update")
    })
-   @PutMapping("/update")
+   @PutMapping("/update/")
    public ResponseEntity<PetDTO.Response> update(
          @RequestParam Long id,
          @RequestBody PetDTO.Request petDTO) throws Exception {
@@ -78,10 +79,10 @@ public class PetController {
          @ApiResponse(responseCode = "200", description = "Pet deleted successfully"),
          @ApiResponse(responseCode = "404", description = "Couldn't find this pet to delete")
    })
-   @DeleteMapping("/delete/{id}")
-   public ResponseEntity<String> deleteById(@PathVariable Long id) {
+   @DeleteMapping("/delete/")
+   public ResponseEntity<String> deleteById(@RequestParam Long id) {
       if (!petService.existsById(id)) {
-         return ResponseEntity.notFound().build();
+         return ResponseEntity.badRequest().body("Animal não encontrado!");
       }
       petService.deleteById(id);
       return ResponseEntity.ok("Animal de estimação apagado com sucesso!");
