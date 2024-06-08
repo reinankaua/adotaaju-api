@@ -1,6 +1,7 @@
 package br.com.adotaaju.adotaajuapi.api.controller;
 
 import br.com.adotaaju.adotaajuapi.api.dto.TutorDTO;
+import br.com.adotaaju.adotaajuapi.core.exception.ResourceNotFoundException;
 import br.com.adotaaju.adotaajuapi.domain.service.TutorService;
 import br.com.adotaaju.adotaajuapi.core.ErrorResponse;
 import br.com.adotaaju.adotaajuapi.core.GenericResponse;
@@ -119,17 +120,25 @@ public class TutorController {
             @ApiResponse(responseCode = "404", description = "Tutor or pet not found"),
             @ApiResponse(responseCode = "400", description = "Pet already adopted")
     })
-    @PostMapping("/adopt")
+    @PostMapping("/adopt/")
     public ResponseEntity<?> adoptPet(
             @RequestParam Long tutorId,
             @RequestParam Long petId) {
+
+        if (tutorService.isPetAdopted(petId)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "Pet já foi adotado!"));
+        }
+
         try {
             tutorService.adoptPet(tutorId, petId);
             return ResponseEntity.ok("Pet adotado com sucesso!");
+        } catch (ResourceNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage()));
         } catch (Exception e) {
-            ErrorResponse errorResponse = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "An error occurred while searching for the adoption: "
-                                + e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ErrorResponse(HttpStatus.BAD_REQUEST.value(), "An error occurred while searching for the adoption: " + e.getMessage()));
         }
     }
 }

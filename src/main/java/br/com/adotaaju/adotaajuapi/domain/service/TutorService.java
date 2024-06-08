@@ -1,7 +1,9 @@
 package br.com.adotaaju.adotaajuapi.domain.service;
 
 import br.com.adotaaju.adotaajuapi.api.dto.TutorDTO;
+import br.com.adotaaju.adotaajuapi.core.exception.ResourceNotFoundException;
 import br.com.adotaaju.adotaajuapi.domain.entity.Adoption;
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.domain.entity.Tutor;
 import br.com.adotaaju.adotaajuapi.domain.repository.AdoptionRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
@@ -13,6 +15,7 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.ResourceAccessException;
 
 @Service
 @Transactional
@@ -132,5 +135,10 @@ public class TutorService {
         responseDTO.setEmail(tutor.getEmail());
         responseDTO.setFlAlreadyAdopted(tutor.getFlAlreadyAdopted());
         return responseDTO;
+    }
+
+    public boolean isPetAdopted(Long petId) {
+        Pet pet = petRepository.findById(petId).orElseThrow(() -> new ResourceNotFoundException("Pet not found"));
+        return pet.getFlAdopted();
     }
 }
