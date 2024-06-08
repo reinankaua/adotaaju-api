@@ -7,6 +7,9 @@ import br.com.adotaaju.adotaajuapi.domain.repository.AdoptionRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.TutorRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -75,6 +78,7 @@ public class TutorService {
         var adoption = new Adoption();
         adoption.setTutor(tutor);
         adoption.setPet(pet);
+        adoption.setCreatedAt(LocalDateTime.now());
         adoptionRepository.save(adoption);
 
         pet.setFlAdopted(true);
@@ -86,7 +90,7 @@ public class TutorService {
         tutor.setCpf(tutorDTO.getCpf());
         tutor.setName(tutorDTO.getName());
         tutor.setAge(tutorDTO.getAge());
-        tutor.setAdress(tutorDTO.getAdress());
+        tutor.setAddress(tutorDTO.getAddress());
         tutor.setPhone(tutorDTO.getPhone());
         tutor.setEmail(tutorDTO.getEmail());
         tutor.setFlAlreadyAdopted(tutorDTO.getFlAlreadyAdopted());
@@ -103,8 +107,8 @@ public class TutorService {
         if (tutorDTO.getAge() != null) {
             tutor.setAge(tutorDTO.getAge());
         }
-        if (tutorDTO.getAdress() != null) {
-            tutor.setAdress(tutorDTO.getAdress());
+        if (tutorDTO.getAddress() != null) {
+            tutor.setAddress(tutorDTO.getAddress());
         }
         if (tutorDTO.getPhone() != null) {
             tutor.setPhone(tutorDTO.getPhone());
@@ -123,7 +127,7 @@ public class TutorService {
         responseDTO.setCpf(tutor.getCpf());
         responseDTO.setName(tutor.getName());
         responseDTO.setAge(tutor.getAge());
-        responseDTO.setAdress(tutor.getAdress());
+        responseDTO.setAddress(tutor.getAddress());
         responseDTO.setPhone(tutor.getPhone());
         responseDTO.setEmail(tutor.getEmail());
         responseDTO.setFlAlreadyAdopted(tutor.getFlAlreadyAdopted());
