@@ -1,10 +1,7 @@
 package br.com.adotaaju.adotaajuapi.domain.repository;
 
-import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.domain.entity.Tutor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.data.repository.CrudRepository;
