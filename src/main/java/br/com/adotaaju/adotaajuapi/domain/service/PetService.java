@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -23,6 +24,11 @@ public class PetService {
 
     @Autowired
     private PetRepository petRepository;
+
+    public PetDTO.Response save(Pet pet){
+        var savedPet = petRepository.save(pet);
+        return mapToResponse(savedPet);
+    }
 
     public PetDTO.Response save(PetDTO.Request petDTO) {
         var pet = mapToEntity(petDTO);

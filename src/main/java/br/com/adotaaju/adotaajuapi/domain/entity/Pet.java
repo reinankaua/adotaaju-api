@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.EnumType;
@@ -39,11 +40,25 @@ public class Pet {
     private String color;
     private Float weight;
     private Boolean flAdopted;
+    
+    @Column(columnDefinition = "TEXT")
+    private String imageBase64;
 
     @CreatedDate
     private LocalDateTime createdAt;
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
-
+   
+    
+    public Pet(PetType type, String breed, Integer age, String color, Float weight, Boolean flAdopted,
+            String imageBase64) {
+        this.type = type;
+        this.breed = breed;
+        this.age = age;
+        this.color = color;
+        this.weight = weight;
+        this.flAdopted = flAdopted;
+        this.imageBase64 = imageBase64;
+    }
 }
