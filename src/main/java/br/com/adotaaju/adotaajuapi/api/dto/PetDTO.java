@@ -57,15 +57,21 @@ public class PetDTO {
                 private PetType type;
 
                 @Schema(description = "Breed of pet", example = "Poodle")
+                @Size(min = 3, max = 99)
                 private String breed;
 
                 @Schema(description = "Age of pet", example = "5")
+                @Min(value = 0)
+                @Max(value = 99)
                 private Integer age;
 
                 @Schema(description = "Color of pet", example = "Black")
+                @Size(min = 3, max = 99)
                 private String color;
 
                 @Schema(description = "Weight of pet", example = "22.5")
+                @DecimalMin(value = "0.0")
+                @DecimalMax(value = "99.0")
                 private Float weight;
 
                 @Schema(description = "Adoption Flag", example = "true")
