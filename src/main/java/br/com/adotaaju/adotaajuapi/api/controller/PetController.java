@@ -3,7 +3,6 @@ package br.com.adotaaju.adotaajuapi.api.controller;
 import br.com.adotaaju.adotaajuapi.api.dto.PetDTO;
 import br.com.adotaaju.adotaajuapi.api.dto.PetType;
 import br.com.adotaaju.adotaajuapi.core.GenericResponse;
-import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.domain.service.PetService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -35,7 +34,12 @@ public class PetController {
       @Autowired
       private PetService petService;
 
-      @PostMapping("/test")
+      @Operation(summary = "Register a new pet", description = "Creates a new pet in the system with the information provided")
+      @ApiResponses(value = {
+                  @ApiResponse(responseCode = "201", description = "A pet has been successfully registered in the database"),
+                  @ApiResponse(responseCode = "400", description = "Invalid information provided")
+      })
+      @PostMapping(value = "/register")
       public ResponseEntity<GenericResponse<PetDTO.Response>> createPet(
             @RequestParam("type") PetType type,
             @RequestParam("breed") String breed,
@@ -48,26 +52,15 @@ public class PetController {
 
             String base64Image = Base64.getEncoder().encodeToString(image.getBytes());
 
+            PetDTO.Request petDTO = new PetDTO.Request();
+            petDTO.setType(type);
+            petDTO.setBreed(breed);
+            petDTO.setAge(age);
+            petDTO.setColor(color);
+            petDTO.setWeight(weight);
+            petDTO.setFlAdopted(flAdopted);
+            petDTO.setImageBase64(base64Image);
 
-            Pet pet = new Pet(type, breed, age, color, weight, flAdopted, base64Image);
-
-            PetDTO.Response responseDTO = petService.save(pet);
-
-            GenericResponse<PetDTO.Response> successResponse = new GenericResponse<>(
-                        HttpStatus.CREATED.value(),
-                        "Operação realizada com sucesso.",
-                        responseDTO);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
-      }
-
-      @Operation(summary = "Register a new pet", description = "Creates a new pet in the system with the information provided")
-      @ApiResponses(value = {
-                  @ApiResponse(responseCode = "201", description = "A pet has been successfully registered in the database"),
-                  @ApiResponse(responseCode = "400", description = "Invalid information provided")
-      })
-      @PostMapping(value = "/register")
-      public ResponseEntity<GenericResponse<PetDTO.Response>> create(@Valid @RequestBody PetDTO.Request petDTO) {
             PetDTO.Response responseDTO = petService.save(petDTO);
 
             GenericResponse<PetDTO.Response> successResponse = new GenericResponse<>(
@@ -77,6 +70,23 @@ public class PetController {
 
             return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
       }
+
+      // @Operation(summary = "Register a new pet", description = "Creates a new pet in the system with the information provided")
+      // @ApiResponses(value = {
+      //             @ApiResponse(responseCode = "201", description = "A pet has been successfully registered in the database"),
+      //             @ApiResponse(responseCode = "400", description = "Invalid information provided")
+      // })
+      // @PostMapping(value = "/register")
+      // public ResponseEntity<GenericResponse<PetDTO.Response>> create(@Valid @RequestBody PetDTO.Request petDTO) {
+      //       PetDTO.Response responseDTO = petService.save(petDTO);
+
+      //       GenericResponse<PetDTO.Response> successResponse = new GenericResponse<>(
+      //                   HttpStatus.CREATED.value(),
+      //                   "Operação realizada com sucesso.",
+      //                   responseDTO);
+
+      //       return ResponseEntity.status(HttpStatus.CREATED).body(successResponse);
+      // }
 
       @Operation(summary = "Search for pets using filter", description = "Search for pets according to the filter passed")
       @ApiResponses(value = {
@@ -140,5 +150,4 @@ public class PetController {
             petService.deleteById(id);
             return ResponseEntity.ok("Animal de estimação apagado com sucesso!");
       }
-
 }

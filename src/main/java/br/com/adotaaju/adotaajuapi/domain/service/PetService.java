@@ -25,10 +25,10 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
-    public PetDTO.Response save(Pet pet){
-        var savedPet = petRepository.save(pet);
-        return mapToResponse(savedPet);
-    }
+    // public PetDTO.Response save(Pet pet){
+    //     var savedPet = petRepository.save(pet);
+    //     return mapToResponse(savedPet);
+    // }
 
     public PetDTO.Response save(PetDTO.Request petDTO) {
         var pet = mapToEntity(petDTO);
@@ -99,6 +99,7 @@ public class PetService {
         pet.setColor(petDTO.getColor());
         pet.setWeight(petDTO.getWeight());
         pet.setFlAdopted(petDTO.getFlAdopted());
+        pet.setImageBase64(petDTO.getImageBase64());
         return pet;
     }
 

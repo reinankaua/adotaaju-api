@@ -1,7 +1,5 @@
 package br.com.adotaaju.adotaajuapi.api.dto;
 
-import org.springframework.web.multipart.MultipartFile;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -48,7 +46,7 @@ public class PetDTO {
                 @Schema(description = "Adoption Flag", example = "true")
                 private Boolean flAdopted;
 
-                private MultipartFile imageBase64;
+                private String imageBase64;
         }
 
         @Data
