@@ -23,7 +23,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "tb_pet")
-@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pet {
