@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table(name = "tb_pet")
+@EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor
 @AllArgsConstructor
 public class Pet {
@@ -31,6 +32,8 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String name;
+    
     @Enumerated(EnumType.STRING)
     private PetType type;
 
@@ -49,15 +52,4 @@ public class Pet {
     @LastModifiedDate
     private LocalDateTime updatedAt;
    
-    
-    public Pet(PetType type, String breed, Integer age, String color, Float weight, Boolean flAdopted,
-            String imageBase64) {
-        this.type = type;
-        this.breed = breed;
-        this.age = age;
-        this.color = color;
-        this.weight = weight;
-        this.flAdopted = flAdopted;
-        this.imageBase64 = imageBase64;
-    }
 }

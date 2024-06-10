@@ -9,16 +9,18 @@ import br.com.adotaaju.adotaajuapi.core.ErrorResponse;
 import br.com.adotaaju.adotaajuapi.core.GenericResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,7 +49,7 @@ public class TutorController {
                     - **phone**: Telefone. <br>Deve ser uma string com no mínimo 8 caracteres e no máximo 11 caracteres.<br>
                     - **email**: E-mail. <br>Deve ser uma string e conter o caractere '@' para ser válido.<br>
                     - **flAlreadyAdopted**: Flag que indica se já adotou algum pet antes. <br>Deve ser um boolean 'True' ou 'False.
-                    """) @Valid @RequestBody TutorDTO.Request tutorDTO) {
+                    """) @Valid @ModelAttribute TutorDTO.Request tutorDTO) throws IOException {
         TutorDTO.Response responseDTO = tutorService.save(tutorDTO);
         GenericResponse<TutorDTO.Response> successResponse = new GenericResponse<>(
                 HttpStatus.CREATED.value(),

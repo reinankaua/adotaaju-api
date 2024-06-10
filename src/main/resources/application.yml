@@ -12,7 +12,7 @@ spring:
     mvc:
       pathmatch:
         matching-strategy:
-          ant_path_matcher
+          ANT_PATH_MATCHER
 server:
   servlet:
     context-path: /v1

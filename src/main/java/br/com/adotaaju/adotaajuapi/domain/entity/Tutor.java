@@ -1,5 +1,6 @@
 package br.com.adotaaju.adotaajuapi.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +36,9 @@ public class Tutor {
     private String email;
     private Boolean flAlreadyAdopted;
 
+    @Column(columnDefinition = "TEXT")
+    private String imageBase64;
+    
     @CreatedDate
     private LocalDateTime createdAt;
 

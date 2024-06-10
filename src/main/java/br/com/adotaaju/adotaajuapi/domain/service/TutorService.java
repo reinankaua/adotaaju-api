@@ -10,12 +10,13 @@ import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.TutorRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Base64;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.ResourceAccessException;
 
 @Service
 @Transactional
@@ -31,7 +32,7 @@ public class TutorService {
     @Autowired
     private AdoptionRepository adoptionRepository;
 
-    public TutorDTO.Response save(TutorDTO.Request tutorDTO) {
+    public TutorDTO.Response save(TutorDTO.Request tutorDTO) throws IOException {
         var tutor = mapToEntity(tutorDTO);
         var savedTutor = tutorRepository.save(tutor);
         return mapToResponse(savedTutor);
@@ -88,7 +89,9 @@ public class TutorService {
         petRepository.save(pet);
     }
 
-    private Tutor mapToEntity(TutorDTO.Request tutorDTO) {
+    private Tutor mapToEntity(TutorDTO.Request tutorDTO) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(tutorDTO.getImage().getBytes());
+
         Tutor tutor = new Tutor();
         tutor.setCpf(tutorDTO.getCpf());
         tutor.setName(tutorDTO.getName());
@@ -97,10 +100,13 @@ public class TutorService {
         tutor.setPhone(tutorDTO.getPhone());
         tutor.setEmail(tutorDTO.getEmail());
         tutor.setFlAlreadyAdopted(tutorDTO.getFlAlreadyAdopted());
+        tutor.setImageBase64(base64Image);
         return tutor;
     }
 
-    private void mapToEntity(TutorDTO.Request tutorDTO, Tutor tutor) {
+    private void mapToEntity(TutorDTO.Request tutorDTO, Tutor tutor) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(tutorDTO.getImage().getBytes());
+        
         if (tutorDTO.getCpf() != null) {
             tutor.setCpf(tutorDTO.getCpf());
         }
@@ -122,6 +128,9 @@ public class TutorService {
         if (tutorDTO.getFlAlreadyAdopted() != null) {
             tutor.setFlAlreadyAdopted(tutorDTO.getFlAlreadyAdopted());
         }
+        if (tutorDTO.getImage() != null) {
+            tutor.setImageBase64(base64Image);
+        }  
     }
 
     private TutorDTO.Response mapToResponse(Tutor tutor) {

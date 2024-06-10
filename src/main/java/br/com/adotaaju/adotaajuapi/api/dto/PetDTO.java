@@ -1,5 +1,7 @@
 package br.com.adotaaju.adotaajuapi.api.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -15,6 +17,11 @@ public class PetDTO {
         @Data
         public static class Request {
                 private Long id;
+
+                @NotBlank(message = "The name field is mandatory")
+                @Schema(description = "Name of pet", example = "Rex")
+                @Size(min = 3, max = 99)
+                private String name;
 
                 @NotNull(message = "The type field is mandatory")
                 @Schema(description = "Type of pet", example = "GATO")
@@ -46,12 +53,16 @@ public class PetDTO {
                 @Schema(description = "Adoption Flag", example = "true")
                 private Boolean flAdopted;
 
-                private String imageBase64;
+                private MultipartFile image;
         }
 
         @Data
         public static class Response {
                 private Long id;
+
+                @Schema(description = "Name of pet", example = "Rex")
+                @Size(min = 3, max = 99)
+                private String name;
 
                 @Schema(description = "Type of pet", example = "GATO")
                 private PetType type;
