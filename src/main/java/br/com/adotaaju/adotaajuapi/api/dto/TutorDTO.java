@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.web.multipart.MultipartFile;
 
 public class TutorDTO {
     @Data
@@ -30,10 +31,10 @@ public class TutorDTO {
         @Min(18) @Max(999)
         private Integer age;
 
-        @NotBlank(message = "The field adress is mandatory")
-        @Schema(description = "Guardian's adress", example = "RUA 10, BAIRRO: SOL")
+        @NotBlank(message = "The field address is mandatory")
+        @Schema(description = "Guardian's address", example = "RUA 10, BAIRRO: SOL")
         @Size(min= 1, max = 300)
-        private String adress;
+        private String address;
 
         @NotBlank(message = "The field phone is mandatory")
         @Schema(description = "Guardian's phone", example = "79988001122")
@@ -48,6 +49,9 @@ public class TutorDTO {
         @NotNull(message = "The field flAlreadyAdopted is mandatory")
         @Schema(description = "Flag if already adopted", example = "true")
         private Boolean flAlreadyAdopted;
+
+        private MultipartFile image;
+
     }
 
     @Data
@@ -63,8 +67,8 @@ public class TutorDTO {
         @Schema(description = "Guardian's age", example = "28")
         private Integer age;
 
-        @Schema(description = "Guardian's adress", example = "RUA 10, BAIRRO: SOL")
-        private String adress;
+        @Schema(description = "Guardian's address", example = "RUA 10, BAIRRO: SOL")
+        private String address;
 
         @Schema(description = "Guardian's phone", example = "79988001122")
         private String phone;

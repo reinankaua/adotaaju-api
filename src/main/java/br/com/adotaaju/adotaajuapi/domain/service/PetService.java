@@ -12,9 +12,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Base64;
 
 @Service
 @Transactional
@@ -24,7 +26,7 @@ public class PetService {
     @Autowired
     private PetRepository petRepository;
 
-    public PetDTO.Response save(PetDTO.Request petDTO) {
+    public PetDTO.Response save(PetDTO.Request petDTO) throws IOException {
         var pet = mapToEntity(petDTO);
         var savedPet = petRepository.save(pet);
         return mapToResponse(savedPet);
@@ -60,6 +62,9 @@ public class PetService {
             if (Objects.nonNull(petDTO.getId())) {
                 predicates.add(cb.equal(root.get("id"), petDTO.getId()));
             }
+            if (Objects.nonNull(petDTO.getName())) {
+                predicates.add(cb.equal(root.get("name"), petDTO.getName()));
+            }
             if (Objects.nonNull(petDTO.getType())) {
                 predicates.add(cb.equal(root.get("type"), petDTO.getType()));
             }
@@ -85,18 +90,27 @@ public class PetService {
         return pets.map(this::mapToResponse);
     }
 
-    private Pet mapToEntity(PetDTO.Request petDTO) {
+    private Pet mapToEntity(PetDTO.Request petDTO) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(petDTO.getImage().getBytes());
+
         Pet pet = new Pet();
+        pet.setName(petDTO.getName());
         pet.setType(petDTO.getType());
         pet.setBreed(petDTO.getBreed());
         pet.setAge(petDTO.getAge());
         pet.setColor(petDTO.getColor());
         pet.setWeight(petDTO.getWeight());
         pet.setFlAdopted(petDTO.getFlAdopted());
+        pet.setImageBase64(base64Image);
         return pet;
     }
 
-    private void mapToEntity(PetDTO.Request petDTO, Pet pet) {
+    private void mapToEntity(PetDTO.Request petDTO, Pet pet) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(petDTO.getImage().getBytes());
+
+        if (petDTO.getName() != null) {
+            pet.setName(petDTO.getName());
+        }
         if (petDTO.getType() != null) {
             pet.setType(petDTO.getType());
         }
@@ -115,11 +129,15 @@ public class PetService {
         if (petDTO.getFlAdopted() != null) {
             pet.setFlAdopted(petDTO.getFlAdopted());
         }
+        if (petDTO.getImage() != null) {
+            pet.setImageBase64(base64Image);
+        }
     }
 
     private PetDTO.Response mapToResponse(Pet pet) {
         PetDTO.Response responseDTO = new PetDTO.Response();
         responseDTO.setId(pet.getId());
+        responseDTO.setName(pet.getName());
         responseDTO.setType(pet.getType());
         responseDTO.setBreed(pet.getBreed());
         responseDTO.setAge(pet.getAge());

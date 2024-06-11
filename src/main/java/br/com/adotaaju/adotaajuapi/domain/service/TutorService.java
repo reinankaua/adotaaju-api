@@ -1,12 +1,19 @@
 package br.com.adotaaju.adotaajuapi.domain.service;
 
 import br.com.adotaaju.adotaajuapi.api.dto.TutorDTO;
+import br.com.adotaaju.adotaajuapi.core.exception.ResourceNotFoundException;
 import br.com.adotaaju.adotaajuapi.domain.entity.Adoption;
+import br.com.adotaaju.adotaajuapi.domain.entity.Pet;
 import br.com.adotaaju.adotaajuapi.domain.entity.Tutor;
 import br.com.adotaaju.adotaajuapi.domain.repository.AdoptionRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.PetRepository;
 import br.com.adotaaju.adotaajuapi.domain.repository.TutorRepository;
 import lombok.RequiredArgsConstructor;
+
+import java.io.IOException;
+import java.time.LocalDateTime;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,7 +32,7 @@ public class TutorService {
     @Autowired
     private AdoptionRepository adoptionRepository;
 
-    public TutorDTO.Response save(TutorDTO.Request tutorDTO) {
+    public TutorDTO.Response save(TutorDTO.Request tutorDTO) throws IOException {
         var tutor = mapToEntity(tutorDTO);
         var savedTutor = tutorRepository.save(tutor);
         return mapToResponse(savedTutor);
@@ -75,25 +82,31 @@ public class TutorService {
         var adoption = new Adoption();
         adoption.setTutor(tutor);
         adoption.setPet(pet);
+        adoption.setCreatedAt(LocalDateTime.now());
         adoptionRepository.save(adoption);
 
         pet.setFlAdopted(true);
         petRepository.save(pet);
     }
 
-    private Tutor mapToEntity(TutorDTO.Request tutorDTO) {
+    private Tutor mapToEntity(TutorDTO.Request tutorDTO) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(tutorDTO.getImage().getBytes());
+
         Tutor tutor = new Tutor();
         tutor.setCpf(tutorDTO.getCpf());
         tutor.setName(tutorDTO.getName());
         tutor.setAge(tutorDTO.getAge());
-        tutor.setAdress(tutorDTO.getAdress());
+        tutor.setAddress(tutorDTO.getAddress());
         tutor.setPhone(tutorDTO.getPhone());
         tutor.setEmail(tutorDTO.getEmail());
         tutor.setFlAlreadyAdopted(tutorDTO.getFlAlreadyAdopted());
+        tutor.setImageBase64(base64Image);
         return tutor;
     }
 
-    private void mapToEntity(TutorDTO.Request tutorDTO, Tutor tutor) {
+    private void mapToEntity(TutorDTO.Request tutorDTO, Tutor tutor) throws IOException {
+        String base64Image = Base64.getEncoder().encodeToString(tutorDTO.getImage().getBytes());
+        
         if (tutorDTO.getCpf() != null) {
             tutor.setCpf(tutorDTO.getCpf());
         }
@@ -103,8 +116,8 @@ public class TutorService {
         if (tutorDTO.getAge() != null) {
             tutor.setAge(tutorDTO.getAge());
         }
-        if (tutorDTO.getAdress() != null) {
-            tutor.setAdress(tutorDTO.getAdress());
+        if (tutorDTO.getAddress() != null) {
+            tutor.setAddress(tutorDTO.getAddress());
         }
         if (tutorDTO.getPhone() != null) {
             tutor.setPhone(tutorDTO.getPhone());
@@ -115,6 +128,9 @@ public class TutorService {
         if (tutorDTO.getFlAlreadyAdopted() != null) {
             tutor.setFlAlreadyAdopted(tutorDTO.getFlAlreadyAdopted());
         }
+        if (tutorDTO.getImage() != null) {
+            tutor.setImageBase64(base64Image);
+        }  
     }
 
     private TutorDTO.Response mapToResponse(Tutor tutor) {
@@ -123,10 +139,15 @@ public class TutorService {
         responseDTO.setCpf(tutor.getCpf());
         responseDTO.setName(tutor.getName());
         responseDTO.setAge(tutor.getAge());
-        responseDTO.setAdress(tutor.getAdress());
+        responseDTO.setAddress(tutor.getAddress());
         responseDTO.setPhone(tutor.getPhone());
         responseDTO.setEmail(tutor.getEmail());
         responseDTO.setFlAlreadyAdopted(tutor.getFlAlreadyAdopted());
         return responseDTO;
+    }
+
+    public boolean isPetAdopted(Long petId) {
+        Pet pet = petRepository.findById(petId).orElseThrow(() -> new ResourceNotFoundException("Pet not found"));
+        return pet.getFlAdopted();
     }
 }

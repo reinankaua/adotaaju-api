@@ -9,6 +9,10 @@ spring:
         generate-ddl: true
         hibernate:
           ddl-auto: update
+    mvc:
+      pathmatch:
+        matching-strategy:
+          ANT_PATH_MATCHER
 server:
   servlet:
     context-path: /v1
