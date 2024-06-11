@@ -41,7 +41,18 @@ public class PetController {
       @ApiResponsesCreated
       @PostMapping(value = "/register")
       //Buscar maneira para documentar o @ModelAttribute
-      public ResponseEntity<GenericResponse<PetDTO.Response>> create(@Valid @ModelAttribute PetDTO.Request petDTO) throws IOException {
+      public ResponseEntity<GenericResponse<PetDTO.Response>> create(
+              @io.swagger.v3.oas.annotations.parameters.RequestBody(description = """
+                    Contrato de entrada: <br>
+                    - **name**: Nome do Animal. Deve ser uma string com no mínimo 3 caracteres e no máximo 99 caracteres.<br>
+                    - **type**: Tipo do Animal. <br>Deve ser passado o tipo CAT para gatos ou DOG para cachorros.<br>
+                    - **breed**: Raça. <br>Deve ser uma string com no mínimo 3 caracteres e no máximo 99 caracteres.<br>
+                    - **age**: Idade. <br>Deve ser um inteiro com no mínimo 1 algarismo e no máximo 2 algarismos.<br>
+                    - **color**: Cor. <br>Deve ser uma string com no mínimo 3 caracteres e no máximo 999 caracteres.<br>
+                    - **weight**: Peso. <br>Deve ser um número flutuante com no mínimo 1 algarismo e no máximo 2 algarismos.<br>
+                    - **flAdopted**: Flag que indica se o animal está disponivel para adoção. <br>Deve ser um boolean 'True' ou 'False.<br>
+                    - **image**: Imagem do animal. <br> Deve ser passado uma foto que representa o animal.
+                    """) @Valid @ModelAttribute PetDTO.Request petDTO) throws IOException {
 
             PetDTO.Response responseDTO = petService.save(petDTO);
 
