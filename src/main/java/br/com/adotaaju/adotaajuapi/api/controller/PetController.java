@@ -40,7 +40,6 @@ public class PetController {
       @Operation(summary = "Register a new pet", description = "Creates a new pet in the system with the information provided")
       @ApiResponsesCreated
       @PostMapping(value = "/register")
-      //Buscar maneira para documentar o @ModelAttribute
       public ResponseEntity<GenericResponse<PetDTO.Response>> create(
               @io.swagger.v3.oas.annotations.parameters.RequestBody(description = """
                     Contrato de entrada: <br>
@@ -67,7 +66,6 @@ public class PetController {
       @Operation(summary = "Search for pets using filter", description = "Search for pets according to the filter passed")
       @ApiResponsesOK
       @GetMapping(value = "/findGeneric", produces = MediaType.APPLICATION_JSON_VALUE)
-      // Removi o seguinte trecho no @GetMapping no momento dos testes ele obrigava a passar uma foto: consumes = MediaType.MULTIPART_FORM_DATA_VALUE 
       public ResponseEntity<GenericResponse<Page<PetDTO.Response>>> searchByCriteria(@Valid @Parameter(description = "A busca generica pode ser realizada passando nenhum, um ou mais parametros") PetDTO.Response petDTO, Pageable pageable) {
             
             Page<PetDTO.Response> result = petService.searchByCriteria(petDTO, pageable);
@@ -89,7 +87,7 @@ public class PetController {
 
       @Operation(summary = "Update a pet", description = "Updates a pet in the system with the information provided")
       @ApiResponsesOK
-      @PutMapping("/update/")
+      @PutMapping("/update")
       public ResponseEntity<GenericResponse<PetDTO.Response>> update(
                   @Parameter(description = "Identificador do animal.<br>" +
                     "Valor deve ser obtido passando o nome como parâmetro para a api: " +
@@ -108,7 +106,7 @@ public class PetController {
                     - **flAdopted**: Flag que indica se o animal está disponivel para adoção. <br>Deve ser um boolean 'True' ou 'False.<br>
                     - **image**: Imagem do animal. <br> Deve ser passado uma foto que representa o animal.
                     """)
-                  @RequestBody PetDTO.Request petDTO)
+                  @ModelAttribute PetDTO.Request petDTO)
                   throws Exception {
 
 
@@ -127,7 +125,7 @@ public class PetController {
 
       @Operation(summary = "Delete a pet", description = "Deletes a pet in the system with the ID provided")
       @ApiResponsesOK
-      @DeleteMapping("/delete/")
+      @DeleteMapping("/delete")
       public ResponseEntity<String> deleteById( @Parameter(description = "Identificador do animal.<br>" + 
       "Valor deve ser obtido passando o nome como parâmetro para a api: " + 
       "http://localhost:8080/v1/pet/findGeneric?name=Rex&page=0&size=1&sort=string<br>" +

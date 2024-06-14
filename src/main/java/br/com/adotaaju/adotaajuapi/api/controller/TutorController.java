@@ -110,7 +110,7 @@ public class TutorController {
                     - **email**: E-mail. <br>Deve ser uma string e conter o caractere '@' para ser válido.<br>
                     - **flAlreadyAdopted**: Flag que indica se já adotou algum pet antes. <br>Deve ser um boolean 'True' ou 'False.
                     """)
-            @RequestBody TutorDTO.Request tutorDTO) throws Exception {
+            @ModelAttribute TutorDTO.Request tutorDTO) throws Exception {
 
         TutorDTO.Response responseDTO = tutorService.update(id, tutorDTO);
         GenericResponse<TutorDTO.Response> successResponse = new GenericResponse<>(
@@ -126,7 +126,7 @@ public class TutorController {
 
     @Operation(summary = "Delete a tutor", description = "Deletes a tutor in the system with the ID provided")
     @ApiResponsesOK
-    @DeleteMapping("/delete/")
+    @DeleteMapping("/delete")
     public ResponseEntity<String> deleteById(
             @Parameter(description = "Identificador do tutor.<br>Valor deve ser obtido passando o cpf como parâmetro " +
                     "para a api: http://localhost:8080/v1/swagger-ui/index.html?urls.primaryName=pet#/tutor/findByCpf<br>" +
